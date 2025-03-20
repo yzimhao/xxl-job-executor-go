@@ -76,7 +76,11 @@ func (e *executor) Init(opts ...Option) {
 	e.runList = &taskList{
 		data: make(map[string]*Task),
 	}
-	e.address = e.opts.ExecutorIp + ":" + e.opts.ExecutorPort
+	if e.opts.ExecutorHost != "" {
+		e.address = e.opts.ExecutorHost
+	} else {
+		e.address = e.opts.ExecutorIp + ":" + e.opts.ExecutorPort
+	}
 	go e.registry()
 }
 
@@ -105,7 +109,7 @@ func (e *executor) Run() (err error) {
 		Handler:      mux,
 	}
 	// 监听端口并提供服务
-	e.log.Info("Starting server at " + e.address)
+	e.log.Info("Starting server at " + e.opts.ExecutorIp + ":" + e.opts.ExecutorPort)
 	go server.ListenAndServe()
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGKILL, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGTERM)

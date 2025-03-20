@@ -1,14 +1,16 @@
 package xxl
 
 import (
-	"github.com/go-basic/ipv4"
 	"time"
+
+	"github.com/go-basic/ipv4"
 )
 
 type Options struct {
 	ServerAddr   string        `json:"server_addr"`   //调度中心地址
 	AccessToken  string        `json:"access_token"`  //请求令牌
 	Timeout      time.Duration `json:"timeout"`       //接口超时时间
+	ExecutorHost string        `json:"executor_host"` //本地（执行器）访问域名，跨网支持，优先级高于ip+port
 	ExecutorIp   string        `json:"executor_ip"`   //本地(执行器)IP(可自行获取)
 	ExecutorPort string        `json:"executor_port"` //本地(执行器)端口
 	RegistryKey  string        `json:"registry_key"`  //执行器名称
@@ -81,5 +83,11 @@ func RegistryKey(registryKey string) Option {
 func SetLogger(l Logger) Option {
 	return func(o *Options) {
 		o.l = l
+	}
+}
+
+func ExecutorHost(host string) Option {
+	return func(o *Options) {
+		o.ExecutorHost = host
 	}
 }
