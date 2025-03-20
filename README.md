@@ -32,6 +32,7 @@ func main() {
 	exec := xxl.NewExecutor(
 		xxl.ServerAddr("http://127.0.0.1/xxl-job-admin"),
 		xxl.AccessToken(""),            //请求令牌(默认为空)
+        xxl.ExecutorHost("http://test.com"), //提供一个可以访问的域名，如果设置了，会优先把这个访问回调地址注册到admin。在开发测试阶段可以用ngrok反代一个到本地的9999端口
 		xxl.ExecutorIp("127.0.0.1"),    //可自动获取
 		xxl.ExecutorPort("9999"),       //默认9999（非必填）
 		xxl.RegistryKey("golang-jobs"), //执行器名称
